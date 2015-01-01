@@ -17,22 +17,24 @@ else
 
 WINDOW-APPLICATION= -mwindows
 
+SDL-PATH=../../../$(shell ls -1t ../../.. | grep SDL2 | head -1)
+
 ifeq (${shell getconf LONG_BIT}, 64)
-SDL-INCLUDE-PATH=../../../sdl/x86_64-w64-mingw32/include
-SDL-LIB-PATH=../../../sdl/x86_64-w64-mingw32/lib
-SIMAVR-INCLUDE-PATH=../../../simavr_dist/64/include
-SIMAVR-LIB-PATH=../../../simavr_dist/64/lib
+SDL-INCLUDE-PATH=${SDL-PATH}/x86_64-w64-mingw32/include
+SDL-LIB-PATH=${SDL-PATH}/x86_64-w64-mingw32/lib
+SIMAVR-INCLUDE-PATH=../../../simavr-lib/64/include
+SIMAVR-LIB-PATH=../../../simavr-lib/64/lib
 else
-SDL-INCLUDE-PATH=../../../sdl/i686-w64-mingw32/include
-SDL-LIB-PATH=../../../sdl/i686-w64-mingw32/lib
-SIMAVR-INCLUDE-PATH=../../../simavr_dist/32/include
-SIMAVR-LIB-PATH=../../../simavr_dist/32/lib
+SDL-INCLUDE-PATH=${SDL-PATH}/i686-w64-mingw32/include
+SDL-LIB-PATH=${SDL-PATH}/i686-w64-mingw32/lib
+SIMAVR-INCLUDE-PATH=../../../simavr-lib/32/include
+SIMAVR-LIB-PATH=../../../simavr-lib/32/lib
 endif
 
 GCC-CFLAGS=-I$(SIMAVR-INCLUDE-PATH) -I$(SDL-INCLUDE-PATH)
 GCC-LDFLAGS=-static -L$(SIMAVR-LIB-PATH) -L$(SDL-LIB-PATH)
 SDL-LDFLAGS=-lSDL2main -lSDL2 -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid  -L../../../SDL/x86_64-w64-mingw32/lib
-AVR-LOC=/cygdrive/c/WinAVR-20100110/bin
+AVR-LOC=$(shell cygpath -u '${AVR32_HOME}/bin')
 AVR-CC=$(AVR-LOC)/avr-gcc
 AVR-OBJ2HEX=$(AVR-LOC)/avr-objcopy 
 AVR-OBJDUMP=$(AVR-LOC)/avr-objdump
