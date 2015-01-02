@@ -24,7 +24,7 @@ const char * simulator_get_firmware()
 
 void simulator_setup(avr_t * avr)
 {
-	// az UART konfigurálása
+	// az SPI konfigurálása
 	avr_irq_register_notify(avr_io_getirq(avr, AVR_IOCTL_SPI_GETIRQ(0), SPI_IRQ_OUTPUT),
 	                        spi_output_irq, NULL);
 	

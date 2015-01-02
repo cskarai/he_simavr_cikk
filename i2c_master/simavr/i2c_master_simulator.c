@@ -42,18 +42,18 @@ void i2c_output_irq(struct avr_irq_t * irq, uint32_t value, void * param)
 			return;
 		}
 	}
-	if( (v.u.twi.addr & 0xFE) == 0 )
+	if( v.u.twi.addr == 0 )
 	{
 		if( v.u.twi.msg & TWI_COND_START )
 		{
 			printf("Üzenetszóró START fogadva\n");
-			avr_raise_irq(i2c_input_irq, avr_twi_irq_msg(TWI_COND_ACK, I2C_ADDRESS, 1));
+			avr_raise_irq(i2c_input_irq, avr_twi_irq_msg(TWI_COND_ACK, 0, 1));
 			return;
 		}
 		if( v.u.twi.msg & TWI_COND_WRITE )
 		{
 			printf("Üzenetszóró I2C byte fogadva: %d\n", v.u.twi.data);
-			avr_raise_irq(i2c_input_irq, avr_twi_irq_msg(TWI_COND_ACK, I2C_ADDRESS, 1));
+			avr_raise_irq(i2c_input_irq, avr_twi_irq_msg(TWI_COND_ACK, 0, 1));
 			return; 
 		}
 		if( v.u.twi.msg & TWI_COND_STOP )
