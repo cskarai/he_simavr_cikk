@@ -58,12 +58,6 @@ void simulator_setup(avr_t * avr)
 
 void simulator_loop(avr_t * avr)
 {
-	// itt egy hibát javítunk: amikor PORTB-t írja a program
-	// a PINB elveszíti az értékét. Ez szimulátor hiba.
-	// a következő rész minden órajelnél átírja PINB-t, ha 
-	// akaratunk ellenére megváltozna
-	avr->data[3+32] = (avr->data[3+32] & 0xF1) | pinb_state;
-	
 	int event = hw_simulator_ui_poll();
 	
 	switch(event)
@@ -106,4 +100,11 @@ void simulator_loop(avr_t * avr)
 		default:
 			break;
 	}
+	
+	avr_ioport_external_t e = {
+		.name = 'B',
+		.mask = 14,
+		.value = pinb_state,
+	};
+	avr_ioctl((avr_t *)avr, AVR_IOCTL_IOPORT_SET_EXTERNAL(e.name), &e);
 }
